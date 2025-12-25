@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-batch-picker',
+  selector: 'app-picker',
   imports: [],
-  templateUrl: './batch-picker.component.html',
-  styleUrl: './batch-picker.component.scss'
+  templateUrl: './picker.component.html',
+  styleUrl: './picker.component.scss'
 })
-export class BatchPickerComponent implements OnInit {
+export class PickerComponent implements OnInit {
   @Input({ required: true }) options!: string[];
   @Output() choosenOption = new EventEmitter<string>();
   choosenOptionStr: string = '';

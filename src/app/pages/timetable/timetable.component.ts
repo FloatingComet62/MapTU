@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 
-import { BatchPickerComponent as BatchPicker } from '../../components/batch-picker/batch-picker.component';
-import { YearPickerComponent as YearPicker } from '../../components/year-picker/year-picker.component';
+import { PickerComponent as Picker } from '../../components/picker/picker.component';
 import { TimetableComponent as TimeTable } from '../../components/timetable/timetable.component';
 import { TimeTable as TimeTableT } from '../../scripts/timetable';
 import { getBatches, getTimetable } from '../../scripts/data';
 
 @Component({
   selector: 'app-timetable',
-  imports: [BatchPicker, YearPicker, TimeTable],
+  imports: [Picker, TimeTable],
   templateUrl: './timetable.component.html',
   styleUrl: './timetable.component.scss'
 })

@@ -1,9 +1,10 @@
 <div class="main">
   <div class="config">
-    <app-year-picker
-      (choosenOption)="yearOption($event)"
+    <app-picker
+      [options]="['Year 1', 'Year 2', 'Year 3', 'Year 4']"
+      (choosenOption)="batchOption($event)"
     />
-    <app-batch-picker
+    <app-picker
       [options]="batches"
       (choosenOption)="batchOption($event)"
     />

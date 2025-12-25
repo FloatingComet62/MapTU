@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BatchPickerComponent } from './batch-picker.component';
+import { PickerComponent } from './picker.component';
 
-describe('YearPickerComponent', () => {
-  let component: BatchPickerComponent;
-  let fixture: ComponentFixture<BatchPickerComponent>;
+describe('PickerComponent', () => {
+  let component: PickerComponent;
+  let fixture: ComponentFixture<PickerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BatchPickerComponent]
+      imports: [PickerComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(BatchPickerComponent);
+    fixture = TestBed.createComponent(PickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

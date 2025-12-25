@@ -1,8 +1,0 @@
-<div class="dropdown">
-  <span>{{ choosenOptionStr }}</span>
-    <div class="dropdown-content">
-      @for (option of options; track option) {
-        <button (click)="choose($event)">{{ option }}</button>
-      }
-    </div>
-</div>

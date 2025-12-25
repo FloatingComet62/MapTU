@@ -11,8 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MapComponent {
   @ViewChild('mapSvg', { static: true }) mapSvg!: ElementRef<SVGSVGElement>;
-  buildings: string[] = [];
-  allBuildings: string[] = [];
+  buildings: { id: string; readable: string; }[] = [];
+  allBuildings: { id: string; readable: string; }[] = [];
   description: string = '';
   currentHighlights: string[] = [];
   refs: { [key: string]: Element } = {};
@@ -23,31 +23,31 @@ export class MapComponent {
   }
 
   ngOnInit(): void {
-    const svgElement = this.mapSvg.nativeElement;
-    const childElements = svgElement.querySelectorAll(':scope > *:not(.road)');
-
-    childElements.forEach((item) => {
+    this.mapSvg.nativeElement.querySelectorAll(':scope > *:not(.road)')
+    .forEach((item) => {
       const id = item.getAttribute('id');
-      if (id) {
-        this.refs[id] = item;
-        const formattedId = fmt(id);
-        this.buildings.push(formattedId);
-        this.allBuildings.push(formattedId);
+      if (!id) return;
 
-        item.addEventListener('mouseenter', () => {
-          this.description = formattedId;
-        });
-      }
+      this.refs[id] = item;
+      this.allBuildings.push({
+        id: id,
+        readable: fmt(id),
+      });
+
+      item.addEventListener('mouseenter', () => {
+        this.description = fmt(id);
+      });
     });
+    this.buildingSearchInput("K")
 
-    if (this.target) {
-      console.log('To highlight via query params: ', this.target);
-      this.highlightBuilding(this.target);
-    }
+    if (!this.target) return;
+    console.log('To highlight via query params: ', this.target);
+    const code = buildingCodeFromLocation(this.target);
+    if (!code) return;
+    this.highlightBuilding(code);
   }
 
-  buildingSearchInput(event: Event) {
-    const searchTerm = (event.target as HTMLInputElement).value.toLowerCase().trim();
+  buildingSearchInput(searchTerm: string) {
     function containsSearchWords(building: string) {
       const terms = searchTerm.split(' ');
       for (const term of terms) {
@@ -57,26 +57,29 @@ export class MapComponent {
       }
       return true;
     }
-    this.buildings = this.allBuildings.filter((building) => containsSearchWords(building.toLowerCase()));
+    this.buildings = this.allBuildings
+      .filter(
+        (building) => containsSearchWords(building.readable.toLowerCase())
+      );
   }
 
   highlightBuilding(target: string) {
     // clear other highlights
-    for (const currentHighlight of this.currentHighlights) {
+    for (const currentHighlight of this.currentHighlights
+         .splice(0, this.currentHighlights.length)) {
       const element: Element = this.refs[currentHighlight];
       element.classList.remove('highlighted');
     }
 
-    const class_to_highlight = buildingCodeFromLocation(target);
-    console.log(class_to_highlight);
-    if (class_to_highlight == null) {
-      return;
-    }
-    this.currentHighlights.push(class_to_highlight);
+    this.currentHighlights.push(target);
 
     setTimeout(() => {
-      const element: Element = this.refs[class_to_highlight];
+      const element: Element = this.refs[target];
       element.classList.add('highlighted');
     }, 100);
+  }
+
+  extractInput(event: Event) {
+    return (event.target as HTMLInputElement).value.toLowerCase().trim();
   }
 }

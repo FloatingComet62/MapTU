@@ -1,3 +1,6 @@
+// Location is like L202
+// Building Code is like CSED
+
 export function buildingCodeFromLocation(location: string | null): string | null {
   if (!location) {
     return null;
